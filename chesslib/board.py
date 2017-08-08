@@ -61,7 +61,9 @@ class Board(dict):
         except KeyError:
             return None
 
-    def save_to_file(self): pass
+    def save_to_file(self):
+        with open("state.fen", "w") as save:
+            save.write(self.export())
 
     def is_in_check_after_move(self, p1, p2):
         # Create a temporary board
