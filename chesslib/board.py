@@ -1,7 +1,7 @@
 from itertools import groupby
 from copy import deepcopy
 
-import pieces
+from . import pieces
 import re
 
 class ChessError(Exception): pass
@@ -98,7 +98,7 @@ class Board(dict):
                 count = 1
                 for position in self.positions[:-1]:
                     count += (position == self.positions[-1])
-                print 'repetition count:', count
+                print(('repetition count:', count))
                 if count >= 3:
                     raise Draw
 
@@ -200,7 +200,7 @@ class Board(dict):
         '''
         if(color not in ("black", "white")): raise InvalidColor
         result = []
-        for coord in self.keys():
+        for coord in list(self.keys()):
             if (self[coord] is not None) and self[coord].color == color:
                 moves = self[coord].possible_moves(coord)
                 if moves: result += moves
@@ -229,7 +229,7 @@ class Board(dict):
 
 
     def get_king_position(self, color):
-        for pos in self.keys():
+        for pos in list(self.keys()):
             if self.is_king(self[pos]) and self[pos].color == color:
                 return pos
 
@@ -241,7 +241,7 @@ class Board(dict):
         if(color not in ("black", "white")): raise InvalidColor
         king = self.get_king(color)
         enemy = self.get_enemy(color)
-        return king in map(self.__getitem__, self.all_possible_moves(enemy))
+        return king in list(map(self.__getitem__, self.all_possible_moves(enemy)))
 
     def letter_notation(self,coord):
         if not self.is_in_bounds(coord): return

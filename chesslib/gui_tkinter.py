@@ -1,8 +1,8 @@
 import os
 import glob
-import board
-import pieces
-import Tkinter as tk
+from . import board
+from . import pieces
+import tkinter as tk
 from PIL import Image, ImageTk
 
 color1 ='white'
@@ -128,8 +128,8 @@ class BoardGuiTk(tk.Frame):
         # Figure out which square we've clicked
         col_size = row_size = event.widget.master.square_size
 
-        current_column = event.x / col_size
-        current_row = 7 - (event.y / row_size)
+        current_column = int(event.x / col_size)
+        current_row = int(8 - (event.y / row_size))
         
         position = self.chessboard.letter_notation((current_row, current_column))
         piece = self.chessboard[position]
@@ -193,7 +193,7 @@ class BoardGuiTk(tk.Frame):
             except board.InvalidMove as error:
                 self.hilighted = []
             except board.ChessError as error:
-                print 'ChessError', error.__class__.__name__
+                print('ChessError', error.__class__.__name__)
                 self.label_status["text"] = error.__class__.__name__
                 self.refresh()
                 raise
@@ -207,7 +207,7 @@ class BoardGuiTk(tk.Frame):
             possible_moves = self.chessboard[pos].possible_moves(pos)
             possible_moves = [m for m in possible_moves if
                               not self.chessboard.is_in_check_after_move(pos, m)]
-            self.hilighted = map(self.chessboard.number_notation, possible_moves)
+            self.hilighted = list(map(self.chessboard.number_notation, possible_moves))
 
     def addpiece(self, name, image, row=0, column=0):
         '''Add a piece to the playing board'''
@@ -267,7 +267,7 @@ class BoardGuiTk(tk.Frame):
     def draw_pieces(self):
         self.canvas.delete("piece")
         
-        for coord, piece in self.chessboard.iteritems():
+        for coord, piece in self.chessboard.items():
             if piece is not None:
                 x,y = self.chessboard.number_notation(coord)
                 self.draw_piece(piece, x, y)

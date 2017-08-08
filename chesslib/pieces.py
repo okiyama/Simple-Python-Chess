@@ -1,4 +1,4 @@
-import pieces
+from . import pieces
 import sys
 
 ABBRIVIATIONS = {
@@ -73,8 +73,8 @@ class Piece(object):
                     legal_moves.append(dest)
                     collision = True
 
-        legal_moves = filter(board.is_in_bounds, legal_moves)
-        return map(board.letter_notation, legal_moves)
+        legal_moves = list(filter(board.is_in_bounds, legal_moves))
+        return list(map(board.letter_notation, legal_moves))
 
     def __str__(self):
         return self.abbriviation
@@ -125,8 +125,8 @@ class Pawn(Piece):
             if self.color == 'black' and position[1] == '4':
                 if abs(ord(position[0].lower()) - ord(en_passent[0].lower())) == 1:
                     legal_moves.append((int(en_passent[1]) - 1, ord(en_passent[0].lower()) - ord('a')))
-        legal_moves = filter(board.is_in_bounds, legal_moves)
-        return map(board.letter_notation, legal_moves)
+        legal_moves = list(filter(board.is_in_bounds, legal_moves))
+        return list(map(board.letter_notation, legal_moves))
 
 
 class Knight(Piece):
@@ -144,8 +144,8 @@ class Knight(Piece):
             if(board.letter_notation(dest) not in board.occupied(piece.color)):
                 legal_moves.append(dest)
 
-        legal_moves = filter(board.is_in_bounds, legal_moves)
-        return map(board.letter_notation, legal_moves)
+        legal_moves = list(filter(board.is_in_bounds, legal_moves))
+        return list(map(board.letter_notation, legal_moves))
 
 
 class Rook(Piece):
