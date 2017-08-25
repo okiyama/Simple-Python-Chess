@@ -72,7 +72,7 @@ class BoardGuiTk(tk.Frame):
         return (self.columns * self.square_size,
                 self.rows * self.square_size)
 
-    def __init__(self, parent, chessboard, square_size=64):
+    def __init__(self, parent, chessboard, simpleMode, square_size=64):
         self.color1 = color1
         self.color2 = color2
         self.chessboard = chessboard
@@ -81,6 +81,7 @@ class BoardGuiTk(tk.Frame):
         self.from_square = None
         self.to_square = None
         self.prompting = False
+        self.simpleMode = simpleMode
 
         canvas_width = self.columns * square_size
         canvas_height = self.rows * square_size
@@ -93,19 +94,20 @@ class BoardGuiTk(tk.Frame):
         self.canvas.bind("<Configure>", self.refresh)
         self.canvas.bind("<Button-1>", self.click)
 
-        self.statusbar = tk.Frame(self, height=64)
-        self.button_quit = tk.Button(self.statusbar, text="New", fg="black", command=self.reset)
-        self.button_quit.pack(side=tk.LEFT, in_=self.statusbar)
+        if not simpleMode:
+            self.statusbar = tk.Frame(self, height=64)
+            self.button_quit = tk.Button(self.statusbar, text="New", fg="black", command=self.reset)
+            self.button_quit.pack(side=tk.LEFT, in_=self.statusbar)
 
-        self.button_save = tk.Button(self.statusbar, text="Save", fg="black", command=self.chessboard.save_to_file)
-        self.button_save.pack(side=tk.LEFT, in_=self.statusbar)
+            self.button_save = tk.Button(self.statusbar, text="Save", fg="black", command=self.chessboard.save_to_file)
+            self.button_save.pack(side=tk.LEFT, in_=self.statusbar)
 
-        self.label_status = tk.Label(self.statusbar, text="   White's turn  ", fg="black")
-        self.label_status.pack(side=tk.LEFT, expand=0, in_=self.statusbar)
+            self.label_status = tk.Label(self.statusbar, text="   White's turn  ", fg="black")
+            self.label_status.pack(side=tk.LEFT, expand=0, in_=self.statusbar)
 
-        self.button_quit = tk.Button(self.statusbar, text="Quit", fg="black", command=self.parent.destroy)
-        self.button_quit.pack(side=tk.RIGHT, in_=self.statusbar)
-        self.statusbar.pack(expand=False, fill="x", side='bottom')
+            self.button_quit = tk.Button(self.statusbar, text="Quit", fg="black", command=self.parent.destroy)
+            self.button_quit.pack(side=tk.RIGHT, in_=self.statusbar)
+            self.statusbar.pack(expand=False, fill="x", side='bottom')
 
 
     def redraw_square(self, coord, color=None):
@@ -278,11 +280,11 @@ class BoardGuiTk(tk.Frame):
         self.draw_pieces()
         self.refresh()
 
-def display(chessboard):
+def display(chessboard, simpleMode):
     root = tk.Tk()
     root.title("Simple Python Chess")
 
-    gui = BoardGuiTk(root, chessboard)
+    gui = BoardGuiTk(root, chessboard, simpleMode)
     gui.pack(side="top", fill="both", expand="true", padx=4, pady=4)
     gui.draw_pieces()
 
