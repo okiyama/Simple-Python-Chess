@@ -2,6 +2,7 @@ Updating for Python 3 - Julian
 
 Julian TODO:
 Get board from gui_tkinter after a move is made
+Get_single_move method in gui_tkinter
 Flip board so black is on bottom
 Big refactor: move from their internal chess representation to the standard python-chess representation
 
