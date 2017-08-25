@@ -196,11 +196,13 @@ class BoardGuiTk(tk.Frame):
                 self.hilighted = []
             except board.ChessError as error:
                 print('ChessError', error.__class__.__name__)
-                self.label_status["text"] = error.__class__.__name__
+                if not self.simpleMode: 
+                    self.label_status["text"] = error.__class__.__name__
                 self.refresh()
                 raise
             else:
-                self.label_status["text"] = " " + piece.color.capitalize() +": "+ p1 + p2
+                if not self.simpleMode: 
+                    self.label_status["text"] = " " + piece.color.capitalize() +": "+ p1 + p2
 
     def hilight(self, pos):
         piece = self.chessboard[pos]
